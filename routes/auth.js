@@ -38,11 +38,11 @@ router.get('/login', (req, res) => {
 
 router.post('/login', async(req, res) => {
   const { name, password } = req.body;
-    const user = await User.findOne({where: { name: name }});
-    if(!user) return failAuth(res, 'неверное имя или пароль!')
+ const user = await User.findOne({where: { name: name }});
+    if(!user) return res.send('неверное имя или пароль!')
     
     const isValidPassword = await bcrypt.compare(password, user.password);
-    if(!isValidPassword) return failAuth(res, 'неверное имя или пароль!!!');
+    if(!isValidPassword) return res.send('неверное имя или пароль!!!');
   
     req.session.user = { id: user.id, name: user.name };
     res.redirect('/');
